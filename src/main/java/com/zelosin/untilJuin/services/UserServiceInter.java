@@ -4,5 +4,6 @@ import com.zelosin.untilJuin.entities.users.info.SPUser;
 
 public interface UserServiceInter {
      SPUser findUserById(long id);
-     SPUser findUserByLogin(String login);
+     SPUser findUserByLogin(String user);
+     void update(SPUser user);
 }

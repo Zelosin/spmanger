@@ -10,6 +10,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.groups.Filter;
+import com.zelosin.untilJuin.entities.users.info.LinkedVKAccount;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class VKServiceImpl implements LinkedServiceInter {
     private VkApiClient apiClient = new VkApiClient(transportClient);
     private UserActor currentUserActor;
     private GroupActor currentGroupActor;
+
+
+
     private UserAuthResponse authResponse;
 
     public String createVKAuthorizationURL(){
@@ -50,7 +54,7 @@ public class VKServiceImpl implements LinkedServiceInter {
                 "&redirect_uri=" + redirectURL;
     }
 
-    public boolean authService(String code){
+    public boolean authService(String code, LinkedVKAccount linkedVKAccount){
         try {
             authResponse = apiClient.oAuth()
                     .userAuthorizationCodeFlow(Integer.valueOf(appplicationId), applicationSecretCode, redirectURL, code)
@@ -59,6 +63,12 @@ public class VKServiceImpl implements LinkedServiceInter {
             e.printStackTrace();
             return false;
         }
+        if(linkedVKAccount == null)
+            linkedVKAccount = new LinkedVKAccount();
+
+        linkedVKAccount.setAccessToken(authResponse.getAccessToken());
+        linkedVKAccount.setUserId(String.valueOf(authResponse.getUserId()));
+
         return true;
     }
 
@@ -66,14 +76,14 @@ public class VKServiceImpl implements LinkedServiceInter {
         return authResponse != null;
     }
 
-    public UserActor getVkAccessTokenForUser(){
-        currentUserActor = new UserActor(authResponse.getUserId(), Objects.requireNonNull(authResponse).getAccessToken());
+    public UserActor getVkAccessTokenForUser(LinkedVKAccount linkedVKAccount){
+        currentUserActor = new UserActor(Integer.valueOf(linkedVKAccount.getUserId()), linkedVKAccount.getAccessToken());
         return currentUserActor;
     }
 
 
-    public GroupActor getVkAccessTokenForComunnity(Integer communityId){
-        currentGroupActor = new GroupActor(communityId, Objects.requireNonNull(authResponse).getAccessToken());
+    public GroupActor getVkAccessTokenForComunnity(Integer communityId, LinkedVKAccount linkedVKAccount){
+        currentGroupActor = new GroupActor(communityId, linkedVKAccount.getAccessToken());
         return currentGroupActor;
     }
 

@@ -28,4 +28,9 @@ public class UserDAOImpl implements UserDAOInter {
         return (SPUser) session.createQuery("from SPUser where userName="+login).list().get(0);
     }
 
+    @Transactional
+    public void update(SPUser user){
+        Session session = entityManager.unwrap(Session.class);
+        session.update(user);
+    }
 }

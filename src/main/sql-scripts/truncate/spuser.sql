@@ -1,0 +1,1 @@
+truncate table `linked_vk_accounts`;

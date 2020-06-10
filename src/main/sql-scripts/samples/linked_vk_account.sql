@@ -1,0 +1,1 @@
+insert into linked_vk_accounts value (null, 1, '1', '2');

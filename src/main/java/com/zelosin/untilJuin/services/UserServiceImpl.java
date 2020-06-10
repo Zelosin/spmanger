@@ -11,6 +11,8 @@ public class UserServiceImpl implements UserServiceInter {
     @Autowired
     private UserDAOInter userDAO;
 
+
+
     @Override
     public SPUser findUserById(long id) {
         return userDAO.findUserById(id);
@@ -19,5 +21,10 @@ public class UserServiceImpl implements UserServiceInter {
     @Override
     public SPUser findUserByLogin(String login){
         return userDAO.findUserByLogin(login);
+    }
+
+    @Override
+    public void update(SPUser user){
+         userDAO.update(user);
     }
 }

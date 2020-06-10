@@ -1,6 +1,7 @@
 package com.zelosin.untilJuin.entities.users.info;
 
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,7 +11,12 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "spusers")
+@Data
 public class SPUser implements UserDetails {
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
 
     @Id
     @Column(name = "id")
@@ -22,6 +28,9 @@ public class SPUser implements UserDetails {
 
     @Column(name = "password")
     private String userPassword;
+
+    @OneToOne(mappedBy = "SPUser", cascade = CascadeType.ALL)
+    private LinkedVKAccount linkedVKAccount;
 
     public SPUser() {
     }
@@ -65,4 +74,17 @@ public class SPUser implements UserDetails {
         this.userName = userName;
         this.userPassword = userPassword;
     }
+
+    public boolean hasLinkedAccount() {
+        if(linkedVKAccount == null){
+            linkedVKAccount = new LinkedVKAccount();
+            return false;
+        }
+        else return linkedVKAccount.getAccessToken() != null;
+    }
+
+    public void defineAccountRelation(){
+        linkedVKAccount.setSPUser(this);
+    }
+
 }

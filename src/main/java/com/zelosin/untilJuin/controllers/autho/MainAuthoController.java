@@ -21,8 +21,6 @@ public class MainAuthoController {
     @GetMapping("services-autho")
     public String authoServices(Model model){
         model.addAttribute("vk", vkService.createVKAuthorizationURL());
-        SPUser user = userManager.findUserById(1);
-
         return "services-autho";
     }
 }
