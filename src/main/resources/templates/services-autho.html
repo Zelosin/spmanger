@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+    <body>
+
+    <div th:if="${vkAuthResult}">
+        <div>Succ</div>
+    </div>
+
+    <div th:if="${isVkLinked}">
+        <div>Alredy authed</div>
+    </div>
+
+    <a th:href="${vk}"> th vk autho</a>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+
+    <a href="https://api.vk.com/method/friends.getOnline?v=5.52&access_token=7d147f734989b6ac84"> test </a>
+    </body>
+</html>

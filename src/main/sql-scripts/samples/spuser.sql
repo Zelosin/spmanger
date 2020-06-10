@@ -1,0 +1,1 @@
+insert into spusers value (null, '1', '2');
